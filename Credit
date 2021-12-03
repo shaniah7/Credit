@@ -1,0 +1,70 @@
+package com.company;
+import java.util.Scanner;
+public class Main {
+    
+
+    public static void main(String[] args) {
+
+                /* Reading number from the user using scanner */
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Number: ");
+                Long number = scanner.nextLong(); // getting value as long
+                scanner.close();
+
+                String numberAsString = number.toString(); // converting number to string
+
+                int[] digits = new int[numberAsString.length()]; // creating an array to store each digits
+                /*
+                 * Getting each digit from number and adding to digits in reverse order for easy
+                 * calculation
+                 */
+                for (int i = numberAsString.length() - 1; i > -1; i--) { // iterating in reverse order
+                    int digit = numberAsString.charAt(i) - '0';
+                    digits[numberAsString.length() - 1 - i] = digit;// adding value to digit array from 0
+                }
+
+                int productSum = 0; // variable to keep sum of product of every other number
+                int nonProductSum = 0; // variable to keep the sum of remaining number
+                for (int i = 0; i < digits.length; i++) {
+                    if (i % 2 != 0) { // checking if it is odd index(index starts from 0), to get every other number
+                        int product = digits[i] * 2; // multiplying with 2
+                        int sum = 0; // variable to keep the sum of digits after product
+                        // iterating to get the digit sum eg: 12 -> 1+2 =3
+                        while (product != 0) {
+                            sum = sum + product % 10; // adding remainder to sum
+                            product = product / 10; // getting next digit
+                        }
+                        productSum += sum; // adding the sum to totalSum
+                    } else {
+                        nonProductSum += digits[i]; // adding all other digits
+                    }
+                }
+
+                boolean isLegit = false;
+                int finalSum = productSum + nonProductSum;
+                if (finalSum % 10 == 0) { // if last digit of sum is 0, its valid
+                    isLegit = true;
+                }
+
+                // if legit, then check the type of card
+                if (isLegit) {
+
+                    if ((numberAsString.length() == 15)
+                            && (numberAsString.startsWith("34") || numberAsString.startsWith("37"))) {
+                        System.out.println("AMEX");
+                    } else if ((numberAsString.length() == 16) && (numberAsString.startsWith("51")
+                            || numberAsString.startsWith("52") || numberAsString.startsWith("53")
+                            || numberAsString.startsWith("54") || numberAsString.startsWith("55"))) {
+                        System.out.println("MASTERCARD");
+                    } else if (((numberAsString.length() == 16) || (numberAsString.length() == 16))
+                            && (numberAsString.startsWith("4"))) {
+                        System.out.println("VISA");
+                    } else {
+                        System.out.println("INVALID");
+                    }
+                } else {
+                    System.out.println("INVALID");
+                }
+
+            }
+        }
